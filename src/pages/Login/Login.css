@@ -1,0 +1,97 @@
+/* src/components/LoginForm.css */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.page-container {
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  height: 100dvh; /* Altura completa de la pantalla */
+  background-image: url("background-login.jpg"); /* Ruta de tu imagen */
+  background-size: cover; /* Hace que la imagen cubra todo el fondo */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+.login-container {
+  background-color: rgba(
+    28,
+    28,
+    28,
+    0.8
+  ); /* Fondo oscuro con opacidad para permitir ver el fondo */
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff; /* Texto blanco */
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  background-color: #ffffff; /* Fondo de input */
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #444444; /* Borde gris oscuro */
+  color: #1c1c1c; /* Texto en el input */
+  padding: 10px;
+  font-size: 16px;
+}
+
+.login-input::placeholder {
+  color: #aaaaaa; /* Color de placeholder más claro */
+}
+.login-logo {
+  display: block;
+  margin: 0 auto;
+  width: 100px; /* Ajusta el tamaño según tu necesidad */
+  height: auto;
+  margin-bottom: 20px; /* Espacio entre el logo y el título */
+}
+
+.login-title {
+  text-align: center;
+  color: #ffffff;
+}
+
+.login-input:focus {
+  border-color: #4a90e2; /* Color de borde al enfocar */
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.input-icon {
+  color: #1c1c1c; /* Color del icono */
+}
+
+.login-button {
+  border-radius: 10px;
+  background-color: white; /* Color del botón */
+  border: none;
+  color: #1c1c1c; /* Texto del botón */
+  padding: 12px 20px; /* Aumenta el relleno vertical y horizontal */
+  font-size: 15px;
+  width: 35%; /* Asegura que el botón ocupe todo el ancho del contenedor */
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #3a7bd5; /* Color del botón al pasar el mouse */
+}
+
+.login-button:focus {
+  outline: none;
+}

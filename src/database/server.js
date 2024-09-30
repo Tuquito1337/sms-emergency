@@ -53,5 +53,39 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// Ruta para actualizar el perfil
+app.post("/api/profile", async (req, res) => {
+  const { username, email, currentPassword, newPassword } = req.body;
+
+  if (!username || !email || !currentPassword || !newPassword) {
+    return res.status(400).json({ success: false, message: "Faltan datos" });
+  }
+
+  // Aquí deberías verificar que la contraseña actual es correcta antes de actualizar
+  const verifyQuery =
+    "SELECT * FROM usuarios WHERE nombre = ? AND password = ?";
+  try {
+    const [verifyResults] = await db.execute(verifyQuery, [
+      username,
+      currentPassword,
+    ]);
+
+    if (verifyResults.length === 0) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Contraseña actual incorrecta" });
+    }
+
+    // Si la contraseña es correcta, actualiza los datos
+    const updateQuery =
+      "UPDATE usuarios SET email = ?, password = ? WHERE nombre = ?";
+    await db.execute(updateQuery, [email, newPassword, username]);
+
+    res.json({ success: true, message: "Perfil actualizado exitosamente" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+});
+
 // Iniciar la conexión y el servidor
 startServer();

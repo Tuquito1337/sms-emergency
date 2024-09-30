@@ -27,7 +27,7 @@ const Login: React.FC = () => {
         if (data.success) {
           message.success("¡Inicio de sesión exitoso!");
           login(); // Autenticar al usuario usando Zustand
-          navigate("/home"); // Redirigir al usuario al inicio
+          navigate("/"); // Redirigir al usuario al inicio
         } else {
           message.error("Credenciales incorrectas");
         }

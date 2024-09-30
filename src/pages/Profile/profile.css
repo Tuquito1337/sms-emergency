@@ -1,0 +1,24 @@
+.profile-layout {
+  min-height: 100vh; /* Asegura que la disposición use toda la altura de la pantalla */
+}
+
+.header {
+  background: #001529; /* Color de fondo para el encabezado */
+  padding: 0 20px; /* Padding para el encabezado */
+}
+
+.content {
+  padding: 20px; /* Espaciado para el contenido */
+}
+
+.profile-container {
+  display: flex; /* Usa flexbox para alinear los elementos */
+  align-items: center; /* Centra verticalmente */
+  justify-content: flex-start; /* Alinea a la izquierda */
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column; /* Asegura que la imagen y el botón estén uno encima del otro */
+  align-items: center; /* Centra horizontalmente */
+}

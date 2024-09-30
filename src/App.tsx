@@ -3,9 +3,9 @@ import AppRouter from "./routes/Router";
 
 const App = () => {
   return (
-    <div>
+    <>
       <AppRouter />
-    </div>
+    </>
   );
 };
 

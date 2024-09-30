@@ -5,16 +5,29 @@
   min-height: 100vh;
 }
 
-/* Estilos del Sider (barra lateral) */
-.logo {
+.sider {
+  padding: 0;
+  margin: 0;
+}
+
+.sider .logo {
   color: white;
   text-align: center;
   padding: 20px;
   font-size: 24px;
   font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Estilos del Header */
+.collapse-btn {
+  width: 100%;
+  text-align: center;
+  border: none;
+  background-color: #001529;
+  color: white;
+  padding: 10px 0;
+}
+
 .header {
   background: #fff;
   padding: 0;
@@ -23,11 +36,9 @@
 
 .header h1 {
   margin: 0;
-  padding: 16px 0;
   font-size: 24px;
 }
 
-/* Estilos del contenido */
 .content {
   margin: 16px;
 }
@@ -35,10 +46,9 @@
 .site-layout-content {
   padding: 24px;
   background: #fff;
-  min-height: 360px;
+  min-height: 420px;
 }
 
-/* Estilos del Footer */
 .footer {
   text-align: center;
 }

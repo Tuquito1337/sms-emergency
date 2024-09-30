@@ -1,5 +1,10 @@
 /* src/layouts/MainLayout.css */
 
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
 /* Estilos generales para todo el layout */
 .main-layout {
   min-height: 100vh;

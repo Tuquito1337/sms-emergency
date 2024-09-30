@@ -1,23 +1,22 @@
 // src/routes/Router.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import Login from "../pages/Login/Index"; // Asegúrate de importar el componente Login
+import Profile from "../pages/Profile";
+import Messages from "../pages/Messages";
 import MainLayout from "../layouts/MainLayout";
+import Login from "../pages/Login/Index";
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        {/* Ruta de Login */}
-        <Route path="/" element={<Login />} />
+        <Route path="login" element={<Login />} />
 
         {/* Layout principal con el menú */}
-        <Route path="/home" element={<MainLayout />}>
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
         </Route>
       </Routes>
     </Router>

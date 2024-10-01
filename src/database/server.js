@@ -87,5 +87,60 @@ app.post("/api/profile", async (req, res) => {
   }
 });
 
+// Ruta para obtener todas las catástrofes
+app.get("/api/historial", async (req, res) => {
+  const query = "SELECT * FROM historial";
+  try {
+    const [results] = await db.execute(query);
+    res.json({ success: true, data: results });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error al obtener las catástrofes" });
+  }
+});
+
+// Ruta para contar catástrofes
+app.get("/api/catastrofes/count", async (req, res) => {
+  const query = "SELECT COUNT(*) as count FROM historial"; // Cambia el nombre de la tabla según tu estructura
+  try {
+    const [results] = await db.execute(query);
+    res.json({ success: true, count: results[0].count });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error al contar las catástrofes" });
+  }
+});
+
+// Ruta para contar puntos de encuentro
+app.get("/api/puntos_encuentro/count", async (req, res) => {
+  const query = "SELECT COUNT(*) as count FROM puntos_encuentro"; // Cambia el nombre de la tabla según tu estructura
+  try {
+    const [results] = await db.execute(query);
+    res.json({ success: true, count: results[0].count });
+  } catch (err) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error al contar los puntos de encuentro",
+      });
+  }
+});
+
+// Ruta para contar personas
+app.get("/api/personas/count", async (req, res) => {
+  const query = "SELECT COUNT(*) as count FROM personas"; // Cambia el nombre de la tabla según tu estructura
+  try {
+    const [results] = await db.execute(query);
+    res.json({ success: true, count: results[0].count });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error al contar las personas" });
+  }
+});
+
 // Iniciar la conexión y el servidor
 startServer();

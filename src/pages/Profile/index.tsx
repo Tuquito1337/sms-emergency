@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Layout,
-  Typography,
-  Upload,
-  Avatar,
-  message,
-} from "antd";
+import { Form, Input, Button, Typography, Upload, Avatar, message } from "antd";
 import {
   UserOutlined,
   MailOutlined,
@@ -17,7 +8,6 @@ import {
 } from "@ant-design/icons"; // Importar el ícono LockOutlined
 import "./Profile.css";
 
-const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const Profile: React.FC = () => {
@@ -65,102 +55,86 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <Layout className="profile-layout">
-      <Header className="header">
-        <Title level={2} style={{ color: "white" }}>
-          Admin Profile
-        </Title>
-      </Header>
-      <Content className="content">
-        <div className="profile-container">
-          <div className="profile-info">
-            <Upload showUploadList={false} beforeUpload={handleUpload}>
-              <Avatar
-                size={100}
-                icon={<UserOutlined />}
-                src={profileImage ? profileImage : undefined}
-                style={{ cursor: "pointer" }}
-              />
-              <Button icon={<UploadOutlined />} style={{ marginTop: "10px" }}>
-                Cambiar Foto de Perfil
-              </Button>
-            </Upload>
-          </div>
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleFinish}
-            style={{ width: "300px", marginLeft: "20px" }}
-          >
-            <Form.Item
-              name="username"
-              label="Usuario"
-              rules={[
-                { required: true, message: "Por favor, ingresa tu usuario!" },
-              ]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Usuario" />
-            </Form.Item>
+    <div className="profile-container">
+      <div className="profile-info">
+        <Upload showUploadList={false} beforeUpload={handleUpload}>
+          <Avatar
+            size={100}
+            icon={<UserOutlined />}
+            src={profileImage ? profileImage : undefined}
+            style={{ cursor: "pointer" }}
+          />
+          <Button icon={<UploadOutlined />} style={{ marginTop: "10px" }}>
+            Cambiar Foto de Perfil
+          </Button>
+        </Upload>
+      </div>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleFinish}
+        style={{ width: "300px", marginLeft: "20px" }}
+      >
+        <Form.Item
+          name="username"
+          label="Usuario"
+          rules={[
+            { required: true, message: "Por favor, ingresa tu usuario!" },
+          ]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Usuario" />
+        </Form.Item>
 
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { required: true, message: "Por favor, ingresa tu email!" },
-                {
-                  type: "email",
-                  message: "Por favor, ingresa un email válido!",
-                },
-              ]}
-            >
-              <Input prefix={<MailOutlined />} placeholder="Email" />
-            </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: "Por favor, ingresa tu email!" },
+            { type: "email", message: "Por favor, ingresa un email válido!" },
+          ]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Form.Item>
 
-            <Form.Item
-              name="currentPassword"
-              label="Contraseña Actual"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor, ingresa tu contraseña actual!",
-                },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />} // Añadir el ícono de candado
-                placeholder="Contraseña Actual"
-              />
-            </Form.Item>
+        <Form.Item
+          name="currentPassword"
+          label="Contraseña Actual"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, ingresa tu contraseña actual!",
+            },
+          ]}
+        >
+          <Input.Password
+            prefix={<LockOutlined />} // Añadir el ícono de candado
+            placeholder="Contraseña Actual"
+          />
+        </Form.Item>
 
-            <Form.Item
-              name="newPassword"
-              label="Nueva Contraseña"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor, ingresa tu nueva contraseña!",
-                },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />} // Añadir el ícono de candado
-                placeholder="Nueva Contraseña"
-              />
-            </Form.Item>
+        <Form.Item
+          name="newPassword"
+          label="Nueva Contraseña"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, ingresa tu nueva contraseña!",
+            },
+          ]}
+        >
+          <Input.Password
+            prefix={<LockOutlined />} // Añadir el ícono de candado
+            placeholder="Nueva Contraseña"
+          />
+        </Form.Item>
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ width: "100%" }}
-              >
-                Guardar Cambios
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </Content>
-    </Layout>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Guardar Cambios
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

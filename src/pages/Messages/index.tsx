@@ -1,7 +1,7 @@
 const Messages = () => {
   return (
     <div>
-      <h1>Contact Us</h1>
+      <h1>Mensajes Automatizados</h1>
       <p>This is the contact page content.</p>
     </div>
   );

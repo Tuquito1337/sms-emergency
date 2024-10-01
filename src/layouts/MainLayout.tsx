@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { CommentOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  CommentOutlined,
+  UserOutlined,
+  HomeOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import "./MainLayout.css";
@@ -20,6 +25,11 @@ const items = [
     key: "3",
     icon: <CommentOutlined />,
     label: <Link to="/messages">Messages</Link>,
+  },
+  {
+    key: "4",
+    icon: <HistoryOutlined />,
+    label: <Link to="/history">History</Link>,
   },
 ];
 

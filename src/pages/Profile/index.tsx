@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
     console.log("Form values:", values);
 
     try {
-      const response = await fetch("http://localhost:3000/api/profile", {
+      const response = await fetch("http://localhost:8000/api/profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
         <div className="profile-info">
           <Upload showUploadList={false} beforeUpload={handleUpload}>
             <Avatar
-              size={100}  /* Reducción del tamaño del avatar */
+              size={100} /* Reducción del tamaño del avatar */
               icon={<UserOutlined />}
               src={profileImage || undefined}
               className="profile-avatar"
@@ -65,7 +65,10 @@ const Profile: React.FC = () => {
           </Upload>
           <Button
             icon={<UploadOutlined />}
-            style={{ marginTop: "10px", fontSize: '14px' }}  /* Ajuste en el tamaño de fuente */
+            style={{
+              marginTop: "10px",
+              fontSize: "14px",
+            }} /* Ajuste en el tamaño de fuente */
           >
             Cambiar Foto de Perfil
           </Button>
@@ -79,7 +82,9 @@ const Profile: React.FC = () => {
           <Form.Item
             name="username"
             label="Usuario"
-            rules={[{ required: true, message: "Por favor, ingresa tu usuario!" }]}
+            rules={[
+              { required: true, message: "Por favor, ingresa tu usuario!" },
+            ]}
           >
             <Input prefix={<UserOutlined />} placeholder="Usuario" />
           </Form.Item>
@@ -98,7 +103,12 @@ const Profile: React.FC = () => {
           <Form.Item
             name="currentPassword"
             label="Contraseña Actual"
-            rules={[{ required: true, message: "Por favor, ingresa tu contraseña actual!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Por favor, ingresa tu contraseña actual!",
+              },
+            ]}
           >
             <Input.Password
               prefix={<LockOutlined />}
@@ -109,7 +119,12 @@ const Profile: React.FC = () => {
           <Form.Item
             name="newPassword"
             label="Nueva Contraseña"
-            rules={[{ required: true, message: "Por favor, ingresa tu nueva contraseña!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Por favor, ingresa tu nueva contraseña!",
+              },
+            ]}
           >
             <Input.Password
               prefix={<LockOutlined />}

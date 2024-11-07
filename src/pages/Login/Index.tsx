@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
   const onFinish = (values: any) => {
     setLoading(true);
-    fetch("http://localhost:3000/api/login", {
+    fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

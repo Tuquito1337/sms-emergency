@@ -16,7 +16,7 @@ const Home: React.FC = () => {
   const fetchCounts = async () => {
     try {
       const catastrofesResponse = await fetch(
-        "http://localhost:3000/api/catastrofes/count"
+        "http://localhost:8000/api/catastrofes/count"
       );
       const catastrofesData = await catastrofesResponse.json();
       if (catastrofesData.success) {
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
       }
 
       const puntosResponse = await fetch(
-        "http://localhost:3000/api/puntos_encuentro/count"
+        "http://localhost:8000/api/puntos_encuentro/count"
       );
       const puntosData = await puntosResponse.json();
       if (puntosData.success) {
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
       }
 
       const personasResponse = await fetch(
-        "http://localhost:3000/api/personas/count"
+        "http://localhost:8000/api/personas/count"
       );
       const personasData = await personasResponse.json();
       if (personasData.success) {
@@ -48,17 +48,17 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ padding: '10px' }}>
-      <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
+    <div style={{ padding: "10px" }}>
+      <Title level={2} style={{ textAlign: "center", marginBottom: "20px" }}>
         Información General
       </Title>
       <Paragraph
         style={{
-          textAlign: 'center',
-          maxWidth: '700px',
-          margin: '0 auto',
-          fontSize: '14px',
-          color: '#595959',
+          textAlign: "center",
+          maxWidth: "700px",
+          margin: "0 auto",
+          fontSize: "14px",
+          color: "#595959",
         }}
       >
         A continuación se presenta un resumen de los datos más relevantes
@@ -67,36 +67,51 @@ const Home: React.FC = () => {
         respuesta ante situaciones de emergencia.
       </Paragraph>
 
-      <Title level={3} style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}>
+      <Title
+        level={3}
+        style={{ textAlign: "center", marginTop: "20px", marginBottom: "20px" }}
+      >
         Estadísticas Actuales
       </Title>
-      
+
       <Row gutter={[8, 8]} justify="center">
         <Col xs={24} sm={12} md={6}>
-          <div style={{ textAlign: 'center' }}>
-            <FireOutlined style={{ fontSize: 36, color: '#fa541c', marginBottom: '5px' }} />
-            <Title level={4} style={{ margin: 0 }}>Catástrofes</Title>
-            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+          <div style={{ textAlign: "center" }}>
+            <FireOutlined
+              style={{ fontSize: 36, color: "#fa541c", marginBottom: "5px" }}
+            />
+            <Title level={4} style={{ margin: 0 }}>
+              Catástrofes
+            </Title>
+            <Paragraph style={{ fontSize: "20px", fontWeight: "bold" }}>
               {catastrofesCount}
             </Paragraph>
           </div>
         </Col>
-        
+
         <Col xs={24} sm={12} md={6}>
-          <div style={{ textAlign: 'center' }}>
-            <EnvironmentOutlined style={{ fontSize: 36, color: '#52c41a', marginBottom: '5px' }} />
-            <Title level={4} style={{ margin: 0 }}>Puntos de Encuentro</Title>
-            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+          <div style={{ textAlign: "center" }}>
+            <EnvironmentOutlined
+              style={{ fontSize: 36, color: "#52c41a", marginBottom: "5px" }}
+            />
+            <Title level={4} style={{ margin: 0 }}>
+              Puntos de Encuentro
+            </Title>
+            <Paragraph style={{ fontSize: "20px", fontWeight: "bold" }}>
               {puntosEncuentroCount}
             </Paragraph>
           </div>
         </Col>
-        
+
         <Col xs={24} sm={12} md={6}>
-          <div style={{ textAlign: 'center' }}>
-            <UserOutlined style={{ fontSize: 36, color: '#1890ff', marginBottom: '5px' }} />
-            <Title level={4} style={{ margin: 0 }}>Personas</Title>
-            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+          <div style={{ textAlign: "center" }}>
+            <UserOutlined
+              style={{ fontSize: 36, color: "#1890ff", marginBottom: "5px" }}
+            />
+            <Title level={4} style={{ margin: 0 }}>
+              Personas
+            </Title>
+            <Paragraph style={{ fontSize: "20px", fontWeight: "bold" }}>
               {personasCount}
             </Paragraph>
           </div>

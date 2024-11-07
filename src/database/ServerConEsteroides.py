@@ -1,9 +1,19 @@
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from databases import Database
-import asyncio
 from datetime import datetime
+from twilio.rest import Client
+import os
 
+# Configuración de Twilio
+TWILIO_ACCOUNT_SID = "AC64ee7ba168b444944c112393d91d7cdb"
+TWILIO_AUTH_TOKEN = "97964ebf91ede99126cf5fec0bc1cdba"
+TWILIO_PHONE_NUMBER = "+12512373792"
+
+# Crear cliente de Twilio
+twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+# Configuración de la base de datos
 DB_USER = "root"
 DB_PASSWORD = ""
 DB_HOST = "localhost"
@@ -14,10 +24,11 @@ database = Database(
     f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 )
 
-
 app = FastAPI()
 
+# Middleware CORS
 from fastapi.middleware.cors import CORSMiddleware
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,6 +66,14 @@ class PersonaDetail(BaseModel):
     telefono: str
     direccion: str
     empresa: str  # Nombre de la empresa asociada, si existe
+class SendMessageRequest(BaseModel):
+    message: str = Field(..., example="Este es un mensaje de prueba para emergencia.")
+    phone_number: str = Field(..., example="+1234567890")
+
+class SendMessageResponse(BaseModel):
+    success: bool
+    sid: str
+    timestamp: datetime
 
 # Eventos de inicio y cierre de conexión de la base de datos
 @app.on_event("startup")
@@ -64,6 +83,58 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     await database.disconnect()
+
+# Ruta para enviar un mensaje con Twilio
+@app.post("/api/send-message", response_model=SendMessageResponse)
+async def send_message(request: SendMessageRequest):
+    # Validación del número de teléfono
+    if not request.phone_number.startswith("+") or len(request.phone_number) < 10:
+        raise HTTPException(
+            status_code=400, detail="El número de teléfono debe estar en formato internacional."
+        )
+
+    try:
+        # Enviar mensaje a través de Twilio
+        message = twilio_client.messages.create(
+            body=request.message,
+            from_=TWILIO_PHONE_NUMBER,
+            to=request.phone_number
+        )
+
+        # Registrar el mensaje en la base de datos
+        query = """
+            INSERT INTO mensajes_enviados (mensaje, telefono, sid, fecha_envio)
+            VALUES (:message, :phone_number, :sid, :fecha_envio)
+        """
+        await database.execute(query, values={
+            "message": request.message,
+            "phone_number": request.phone_number,
+            "sid": message.sid,
+            "fecha_envio": datetime.utcnow()
+        })
+
+        # Respuesta exitosa
+        return SendMessageResponse(
+            success=True,
+            sid=message.sid,
+            timestamp=datetime.utcnow()
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error al enviar el mensaje: {str(e)}"
+        )
+    
+@app.get("/api/catastrofes/messages")
+async def get_catastrophe_messages():
+    query = """
+        SELECT tipo AS disaster_type, mensaje AS message 
+        FROM catastrofes
+    """
+    results = await database.fetch_all(query)
+    if not results:
+        raise HTTPException(status_code=404, detail="No se encontraron mensajes de catástrofes")
+    return [{"disaster_type": row["disaster_type"], "message": row["message"]} for row in results]
 
 # Ruta de inicio de sesión (simula un token)
 @app.post("/api/login")

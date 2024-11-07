@@ -6,8 +6,8 @@ from twilio.rest import Client
 import os
 
 # Configuración de Twilio
-TWILIO_ACCOUNT_SID = "AC64ee7ba168b444944c112393d91d7cdb"
-TWILIO_AUTH_TOKEN = "97964ebf91ede99126cf5fec0bc1cdba"
+TWILIO_ACCOUNT_SID = ""
+TWILIO_AUTH_TOKEN = ""
 TWILIO_PHONE_NUMBER = "+12512373792"
 
 # Crear cliente de Twilio

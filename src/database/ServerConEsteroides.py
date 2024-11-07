@@ -72,6 +72,8 @@ class PersonaDetail(BaseModel):
     telefono: str
     direccion: str
     empresa: str  # Nombre de la empresa asociada, si existe
+    punto_encuentro_direccion: str  # Dirección del punto de encuentro
+    punto_encuentro_nombre: str  # Nombre del punto de encuentro
 class SendMessageRequest(BaseModel):
     message: str = Field(..., example="Este es un mensaje de prueba para emergencia.")
     phone_number: str = Field(..., example="+1234567890")
@@ -89,6 +91,32 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     await database.disconnect()
+
+@app.get("/api/personas")
+async def get_personas():
+    query = """
+        SELECT 
+            personas.id,
+            personas.nombre,
+            personas.telefono
+        FROM personas
+    """
+    results = await database.fetch_all(query)
+    return results
+
+@app.get("/api/desastres")
+async def get_desastres():
+    query = """
+        SELECT 
+            id, 
+            tipo, 
+            mensaje, 
+            direccion 
+        FROM catastrofe
+    """
+    results = await database.fetch_all(query)
+    return results
+
 
 # Ruta para enviar un mensaje con Twilio
 @app.post("/api/send-message", response_model=SendMessageResponse)

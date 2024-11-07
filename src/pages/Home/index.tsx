@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import {
   EnvironmentOutlined,
   UserOutlined,
@@ -13,7 +13,6 @@ const Home: React.FC = () => {
   const [puntosEncuentroCount, setPuntosEncuentroCount] = useState<number>(0);
   const [personasCount, setPersonasCount] = useState<number>(0);
 
-  // Función para cargar los conteos
   const fetchCounts = async () => {
     try {
       const catastrofesResponse = await fetch(
@@ -44,57 +43,63 @@ const Home: React.FC = () => {
     }
   };
 
-  // Cargar los conteos cuando se monte el componente
   useEffect(() => {
     fetchCounts();
   }, []);
 
   return (
-    <div>
-      <Title level={1}>Información</Title>
-      <Paragraph>
-        En esta sección se presenta un resumen de los datos más relevantes
+    <div style={{ padding: '10px' }}>
+      <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
+        Información General
+      </Title>
+      <Paragraph
+        style={{
+          textAlign: 'center',
+          maxWidth: '700px',
+          margin: '0 auto',
+          fontSize: '14px',
+          color: '#595959',
+        }}
+      >
+        A continuación se presenta un resumen de los datos más relevantes
         relacionados con las catástrofes, los puntos de encuentro y las personas
         involucradas. Esta información es vital para la planificación y
-        respuesta ante situaciones de emergencia, permitiendo una mejor
-        organización y un adecuado manejo de recursos. A continuación, se
-        detallan las cifras actuales:
+        respuesta ante situaciones de emergencia.
       </Paragraph>
 
-      <Title level={1}>Estadisticas</Title>
-      <Row gutter={16}>
-        <Col span={8}>
-          <Card bordered={false}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <FireOutlined style={{ fontSize: 24, marginRight: 10 }} />
-              <div>
-                <h3>Cantidad de Catástrofes</h3>
-                <p>{catastrofesCount}</p>
-              </div>
-            </div>
-          </Card>
+      <Title level={3} style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}>
+        Estadísticas Actuales
+      </Title>
+      
+      <Row gutter={[8, 8]} justify="center">
+        <Col xs={24} sm={12} md={6}>
+          <div style={{ textAlign: 'center' }}>
+            <FireOutlined style={{ fontSize: 36, color: '#fa541c', marginBottom: '5px' }} />
+            <Title level={4} style={{ margin: 0 }}>Catástrofes</Title>
+            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {catastrofesCount}
+            </Paragraph>
+          </div>
         </Col>
-        <Col span={8}>
-          <Card bordered={false}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <EnvironmentOutlined style={{ fontSize: 24, marginRight: 10 }} />
-              <div>
-                <h3>Cantidad de Puntos de Encuentro</h3>
-                <p>{puntosEncuentroCount}</p>
-              </div>
-            </div>
-          </Card>
+        
+        <Col xs={24} sm={12} md={6}>
+          <div style={{ textAlign: 'center' }}>
+            <EnvironmentOutlined style={{ fontSize: 36, color: '#52c41a', marginBottom: '5px' }} />
+            <Title level={4} style={{ margin: 0 }}>Puntos de Encuentro</Title>
+            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {puntosEncuentroCount}
+            </Paragraph>
+          </div>
         </Col>
-        <Col span={8}>
-          <Card bordered={false}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <UserOutlined style={{ fontSize: 24, marginRight: 10 }} />
-              <div>
-                <h3>Cantidad de Personas</h3>
-                <p>{personasCount}</p>
-              </div>
-            </div>
-          </Card>
+        
+        <Col xs={24} sm={12} md={6}>
+          <div style={{ textAlign: 'center' }}>
+            <UserOutlined style={{ fontSize: 36, color: '#1890ff', marginBottom: '5px' }} />
+            <Title level={4} style={{ margin: 0 }}>Personas</Title>
+            <Paragraph style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {personasCount}
+            </Paragraph>
+          </div>
         </Col>
       </Row>
     </div>

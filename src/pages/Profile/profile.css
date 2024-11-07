@@ -1,24 +1,56 @@
 .profile-layout {
-  min-height: 100vh; /* Asegura que la disposición use toda la altura de la pantalla */
-}
-
-.header {
-  background: #001529; /* Color de fondo para el encabezado */
-  padding: 0 20px; /* Padding para el encabezado */
-}
-
-.content {
-  padding: 20px; /* Espaciado para el contenido */
+  min-height: 100vh;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-container {
-  display: flex; /* Usa flexbox para alinear los elementos */
-  align-items: center; /* Centra verticalmente */
-  justify-content: flex-start; /* Alinea a la izquierda */
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile-info {
   display: flex;
-  flex-direction: column; /* Asegura que la imagen y el botón estén uno encima del otro */
-  align-items: center; /* Centra horizontalmente */
+  flex-direction: column;
+  align-items: center;
+  margin-right: 30px;
 }
+
+.profile-avatar {
+  border: 2px solid #1890ff;
+}
+
+.profile-form {
+  width: 300px;
+}
+
+.ant-form-item-label > label {
+  color: #001529;
+}
+
+button.ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  transition: background-color 0.3s;
+}
+
+button.ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+button.ant-btn-icon-only {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+button.ant-btn-icon-only:hover {
+  background-color: #40a9ff;
+}
+

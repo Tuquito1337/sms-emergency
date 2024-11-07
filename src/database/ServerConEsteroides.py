@@ -5,10 +5,16 @@ from datetime import datetime
 from twilio.rest import Client
 import os
 
+import os
+from dotenv import load_dotenv
+
+# Carga las variables del archivo .env
+load_dotenv()
+
 # Configuración de Twilio
-TWILIO_ACCOUNT_SID = ""
-TWILIO_AUTH_TOKEN = ""
-TWILIO_PHONE_NUMBER = "+12512373792"
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
 # Crear cliente de Twilio
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)

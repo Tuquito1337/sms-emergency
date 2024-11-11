@@ -4,8 +4,6 @@ from databases import Database
 from datetime import datetime
 from twilio.rest import Client
 import os
-
-import os
 from dotenv import load_dotenv
 
 # Carga las variables del archivo .env
@@ -35,7 +33,6 @@ app = FastAPI()
 # Middleware CORS
 from fastapi.middleware.cors import CORSMiddleware
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Permitir todos los orígenes, ajusta según sea necesario
@@ -44,11 +41,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Modelos Pydantic
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+class RegisterRequest(BaseModel):
+    username: str
+    password: str
+    email: str
 
 class ProfileUpdateRequest(BaseModel):
     username: str
@@ -74,6 +75,7 @@ class PersonaDetail(BaseModel):
     empresa: str  # Nombre de la empresa asociada, si existe
     punto_encuentro_direccion: str  # Dirección del punto de encuentro
     punto_encuentro_nombre: str  # Nombre del punto de encuentro
+
 class SendMessageRequest(BaseModel):
     message: str = Field(..., example="Este es un mensaje de prueba para emergencia.")
     phone_number: str = Field(..., example="+1234567890")
@@ -92,84 +94,6 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.get("/api/personas")
-async def get_personas():
-    query = """
-        SELECT 
-            personas.id,
-            personas.nombre,
-            personas.telefono
-        FROM personas
-    """
-    results = await database.fetch_all(query)
-    return results
-
-@app.get("/api/desastres")
-async def get_desastres():
-    query = """
-        SELECT 
-            id, 
-            tipo, 
-            mensaje, 
-            direccion 
-        FROM catastrofe
-    """
-    results = await database.fetch_all(query)
-    return results
-
-
-# Ruta para enviar un mensaje con Twilio
-@app.post("/api/send-message", response_model=SendMessageResponse)
-async def send_message(request: SendMessageRequest):
-    # Validación del número de teléfono
-    if not request.phone_number.startswith("+") or len(request.phone_number) < 10:
-        raise HTTPException(
-            status_code=400, detail="El número de teléfono debe estar en formato internacional."
-        )
-
-    try:
-        # Enviar mensaje a través de Twilio
-        message = twilio_client.messages.create(
-            body=request.message,
-            from_=TWILIO_PHONE_NUMBER,
-            to=request.phone_number
-        )
-
-        # Registrar el mensaje en la base de datos
-        query = """
-            INSERT INTO mensajes_enviados (mensaje, telefono, sid, fecha_envio)
-            VALUES (:message, :phone_number, :sid, :fecha_envio)
-        """
-        await database.execute(query, values={
-            "message": request.message,
-            "phone_number": request.phone_number,
-            "sid": message.sid,
-            "fecha_envio": datetime.utcnow()
-        })
-
-        # Respuesta exitosa
-        return SendMessageResponse(
-            success=True,
-            sid=message.sid,
-            timestamp=datetime.utcnow()
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error al enviar el mensaje: {str(e)}"
-        )
-    
-@app.get("/api/catastrofes/messages")
-async def get_catastrophe_messages():
-    query = """
-        SELECT tipo AS disaster_type, mensaje AS message 
-        FROM catastrofes
-    """
-    results = await database.fetch_all(query)
-    if not results:
-        raise HTTPException(status_code=404, detail="No se encontraron mensajes de catástrofes")
-    return [{"disaster_type": row["disaster_type"], "message": row["message"]} for row in results]
-
 # Ruta de inicio de sesión (simula un token)
 @app.post("/api/login")
 async def login(request: LoginRequest):
@@ -180,6 +104,27 @@ async def login(request: LoginRequest):
         return {"success": True, "message": "Inicio de sesión exitoso", "token": "token_simulado"}
     else:
         return {"success": False, "message": "Credenciales incorrectas"}
+
+# Ruta para registro de nuevos usuarios
+@app.post("/api/register")
+async def register(request: RegisterRequest):
+    # Verificar si el nombre de usuario o el correo ya existen
+    query_check = "SELECT * FROM usuarios WHERE nombre = :username OR email = :email"
+    result = await database.fetch_one(query_check, values={"username": request.username, "email": request.email})
+    
+    if result:
+        return {"success": False, "message": "El usuario o el correo ya existen"}
+
+    # Insertar el nuevo usuario en la base de datos
+    query_insert = "INSERT INTO usuarios (nombre, password, email) VALUES (:username, :password, :email)"
+    await database.execute(query_insert, values={
+        "username": request.username,
+        "password": request.password,  # Aquí debes usar hashing para las contraseñas en producción
+        "email": request.email
+    })
+    
+    # Simulación de token de autenticación
+    return {"success": True, "message": "Registro exitoso", "token": "token_simulado"}
 
 # Ruta para actualizar el perfil
 @app.post("/api/profile")
@@ -215,28 +160,25 @@ async def get_historial():
     results = await database.fetch_all(query)
     return results
 
-# Ruta para contar catástrofes
+# Otras rutas para contar catástrofes, personas y puntos de encuentro
 @app.get("/api/catastrofes/count")
 async def count_catastrofes():
     query = "SELECT COUNT(*) as count FROM historial"
     result = await database.fetch_one(query)
     return {"success": True, "count": result["count"]}
 
-# Ruta para contar puntos de encuentro
 @app.get("/api/puntos_encuentro/count")
 async def count_puntos_encuentro():
     query = "SELECT COUNT(*) as count FROM puntos_encuentro"
     result = await database.fetch_one(query)
     return {"success": True, "count": result["count"]}
 
-# Ruta para contar personas
 @app.get("/api/personas/count")
 async def count_personas():
     query = "SELECT COUNT(*) as count FROM personas"
     result = await database.fetch_one(query)
     return {"success": True, "count": result["count"]}
 
-# Ruta para obtener el detalle de todas las personas y sus empresas asociadas
 @app.get("/api/personas", response_model=list[PersonaDetail])
 async def get_personas():
     query = """

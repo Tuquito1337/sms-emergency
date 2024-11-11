@@ -53,6 +53,45 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// Ruta de registro
+app.post("/api/register", async (req, res) => {
+  const { username, email, password, confirmPassword } = req.body;
+
+  // Validar que todos los campos están presentes
+  if (!username || !email || !password || !confirmPassword) {
+    return res.status(400).json({ success: false, message: "Faltan datos" });
+  }
+
+  // Verificar que las contraseñas coinciden
+  if (password !== confirmPassword) {
+    return res.status(400).json({ success: false, message: "Las contraseñas no coinciden" });
+  }
+
+  // Verificar si el nombre de usuario ya existe
+  const checkUserQuery = "SELECT * FROM usuarios WHERE nombre = ? OR email = ?";
+  try {
+    const [existingUser] = await db.execute(checkUserQuery, [username, email]);
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre de usuario o el correo ya están registrados"
+      });
+    }
+
+    // Insertar el nuevo usuario en la base de datos
+    const insertUserQuery = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)";
+    await db.execute(insertUserQuery, [username, email, password]);
+
+    // Enviar una respuesta de éxito
+    res.json({ success: true, message: "Usuario registrado con éxito" });
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+});
+
+
 // Ruta para actualizar el perfil
 app.post("/api/profile", async (req, res) => {
   const { username, email, currentPassword, newPassword } = req.body;
